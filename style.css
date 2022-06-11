@@ -1,0 +1,179 @@
+<style>
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+li,
+a,
+p,
+textarea {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+img {
+  max-width: 100%;
+}
+
+html {
+  touch-action: manipulation;
+  font-size: 62.5%;
+}
+
+@media (max-width: 400px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 90%;
+  }
+}
+
+body {
+  background-color: black;
+  font-size: 1.4em;
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
+
+.display {
+  background: rgba(255, 255, 255, 0.9);
+  text-align: right;
+  height: 30vh;
+  height: calc(var(--vh, 1vh) * 30);
+}
+
+.current {
+  font-size: 4em;
+}
+
+.result {
+  font-size: 2em;
+  color: #555;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 70vh;
+  height: calc(var(--vh, 1vh) * 70);
+}
+
+.contailer li {
+}
+
+.left {
+  display: flex;
+  width: 75%;
+  flex-flow: row-reverse wrap;
+}
+
+.left li {
+  width: calc(100% / 3);
+}
+
+.left li button {
+  width: 100%;
+  height: 100%;
+}
+
+.right {
+  display: flex;
+  width: 25%;
+  flex-flow: row wrap;
+}
+
+.right li {
+  width: 100%;
+}
+
+.right li button {
+  width: 100%;
+  height: 100%;
+}
+
+button {
+  font-size: 1.4em;
+  background-color: #444;
+  color: white;
+  border: none;
+  font-size: 1.6em;
+  font-weight: lighter;
+}
+button:focus {
+  outline: none;
+}
+
+button.num {
+}
+
+button.mark {
+  background-color: #555;
+}
+
+button.clear {
+  background-color: #999;
+}
+
+button.del {
+  background-color: #666;
+}
+
+div.comment {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.comment-inner {
+  max-width: 16em;
+}
+
+div.character {
+  width: 4em;
+}
+
+.comment .textarea {
+  padding: 0.8em;
+  padding-right: 1em;
+  float: left;
+  /*  */
+  resize: none;
+  border-radius: 0.5em;
+  text-align: left;
+  font-weight: bold;
+  color: white;
+  /*  */
+  background-color: #b2ce54;
+  /*  */
+}
+
+textarea:focus {
+  outline: none;
+}
+
+.triangle {
+  float: left;
+  width: 0.4em;
+  margin-top: 1em;
+  border-top: 0.3em solid transparent;
+  border-bottom: 0.3em solid transparent;
+  border-left: 0.6em solid #b2ce54;
+}
+</style>
