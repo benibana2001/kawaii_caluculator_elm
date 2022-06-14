@@ -12,6 +12,7 @@ main =
         , update = update
         , view = view
         }
+
 -- MODEL
 type alias Model =
     { currentMessage : String
@@ -43,19 +44,26 @@ init =
 stringToInt : String -> Int
 stringToInt str = Maybe.withDefault 0 <| String.toInt str
 
--- stringFromInt : Int -> String
--- stringFromInt int = Maybe.withDefault "0" (String.fromInt int)
-
 sumString : String -> String -> Int
 sumString a b =
     (stringToInt a) + (stringToInt b)
 
 -- VIEW
 
+viewButtonText : String -> Html Msg
+viewButtonText str =
+    li []
+    [ button [] [ text str ] ]
+
 viewButtonNum : Int -> Html Msg
 viewButtonNum int =
     li []
     [ button [ onClick (Input int) ] [ text <| String.fromInt int ]]
+
+viewButtonSign : Msg -> String -> Html Msg
+viewButtonSign msg str =
+    li []
+    [ button [ onClick msg ] [ text str ]]
 
 view : Model -> Html Msg
 view model =
@@ -74,12 +82,15 @@ view model =
                     [ img [ src "./assets/character.png"] []]]]
         , div [] 
             [ ul []
-                <| List.map (\item -> viewButtonNum item) model.buttons.nums
+                (model.buttons.nums 
+                    |> List.map viewButtonNum)
             , ul [] 
                 <| List.append
-                [ li [] [text model.buttons.clear]
-                , li [] [text model.buttons.del]]
-                <| List.map (\item -> li [] [ text item ]) model.buttons.signs ] ]
+                [ viewButtonText model.buttons.clear
+                , viewButtonText model.buttons.del
+                , viewButtonSign Sum "+" ]
+                (model.buttons.signs |> List.map viewButtonText) ] ]
+                
 
 -- UPDATE
 update : Msg -> Model -> Model
@@ -87,10 +98,10 @@ update msg model =
     case msg of
         Input input ->
             { model | current = input }
-        Sum input ->
-            { model | result =  (+) model.current input }
+        Sum ->
+            { model | result =  (+) model.current model.result }
 
 type Msg
     = Input Int
-    | Sum Int
+    | Sum
     -- | Sub Int -> Int
