@@ -20,7 +20,8 @@ type alias Model =
     , clickMessage : List String
     , current : Int
     , result : Int
-    , buttons: 
+    , commands : Int -> Int -> Int
+    , buttons :
         { clear : String
         , del : String
         , nums : List Int
@@ -32,6 +33,7 @@ init =
     , clickMessage = ["clickMessage"]
     , current = 0
     , result = 0
+    , commands = (+)
     , buttons = 
         { clear = "clear"
         , del = "del"
@@ -43,10 +45,6 @@ init =
 
 stringToInt : String -> Int
 stringToInt str = Maybe.withDefault 0 <| String.toInt str
-
-sumString : String -> String -> Int
-sumString a b =
-    (stringToInt a) + (stringToInt b)
 
 -- VIEW
 
@@ -97,11 +95,14 @@ update : Msg -> Model -> Model
 update msg model =
     case msg of
         Input input ->
-            { model | current = input }
+            { model
+                | current = stringToInt <| (String.fromInt model.current) ++ (String.fromInt input) }
         Sum ->
-            { model | result =  (+) model.current model.result }
+            { model 
+                | result = model.commands model.result model.current
+                , current = 0
+                , commands = (+) }
 
 type Msg
     = Input Int
     | Sum
-    -- | Sub Int -> Int
