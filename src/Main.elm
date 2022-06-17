@@ -18,9 +18,9 @@ type alias Model =
     { currentMessage : String
     , messages : List String
     , clickMessage : List String
-    , current : Int
-    , result : Int
-    , commands : Int -> Int -> Int
+    , current : Float
+    , result : Float
+    , commands : Float -> Float -> Float
     , buttons :
         { clear : String
         , del : String
@@ -43,34 +43,34 @@ init =
         , signs =
             [ "+", "-", "*", "/", "="]}}
 
-stringToInt : String -> Int
-stringToInt str = Maybe.withDefault 0 <| String.toInt str
+stringToFloat : String -> Float
+stringToFloat str = Maybe.withDefault 0 <| String.toFloat str
 
 -- VIEW
 
-viewButtonText : String -> Html Msg
-viewButtonText str =
+viewButtonText : Msg -> String -> Html Msg
+viewButtonText msg str =
     li []
-    [ button [] [ text str ] ]
+    [ button [ onClick msg ] [ text str ] ]
 
 viewButtonNum : Int -> Html Msg
 viewButtonNum int =
     li []
     [ button [ onClick (Input int) ] [ text <| String.fromInt int ]]
 
-viewButtonSign : Msg -> String -> Html Msg
-viewButtonSign msg str =
+viewButtonSign : (Float -> Float -> Float) -> String -> Html Msg
+viewButtonSign command str =
     li []
-    [ button [ onClick msg ] [ text str ]]
+    [ button [ onClick (Command command) ] [ text str ]]
 
 view : Model -> Html Msg
 view model =
     div []
         [ div []
             [ div [] 
-                [ text (String.fromInt model.current)]
+                [ text (String.fromFloat model.current)]
             , div [] 
-                [ text (String.fromInt model.result)]
+                [ text (String.fromFloat model.result)]
             , div []
                 [ div [] 
                     [ div [] 
@@ -83,11 +83,12 @@ view model =
                 (model.buttons.nums 
                     |> List.map viewButtonNum)
             , ul [] 
-                <| List.append
-                [ viewButtonText model.buttons.clear
-                , viewButtonText model.buttons.del
-                , viewButtonSign Sum "+" ]
-                (model.buttons.signs |> List.map viewButtonText) ] ]
+                [ viewButtonText Clear model.buttons.clear
+                , viewButtonText Del model.buttons.del
+                , viewButtonSign (+) "+" 
+                , viewButtonSign (-) "-" 
+                , viewButtonSign (*) "*"
+                , viewButtonSign (/) "/" ] ] ]
                 
 
 -- UPDATE
@@ -96,13 +97,23 @@ update msg model =
     case msg of
         Input input ->
             { model
-                | current = stringToInt <| (String.fromInt model.current) ++ (String.fromInt input) }
-        Sum ->
+                | current = stringToFloat <| (String.fromFloat model.current) ++ (String.fromInt input) }
+        Command command ->
             { model 
                 | result = model.commands model.result model.current
                 , current = 0
+                , commands = command }
+        Clear ->
+            { model
+                | result = 0
+                , current = 0
                 , commands = (+) }
+        Del ->
+            { model
+                | current = 0 }
 
 type Msg
     = Input Int
-    | Sum
+    | Command (Float -> Float -> Float)
+    | Clear
+    | Del
