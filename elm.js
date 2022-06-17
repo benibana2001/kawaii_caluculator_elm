@@ -1,17 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Main</title>
-  <style>body { padding: 0; margin: 0; }</style>
-</head>
-
-<body>
-
-<pre id="elm"></pre>
-
-<script>
-try {
 (function(scope){
 'use strict';
 
@@ -5263,8 +5249,6 @@ var $author$project$Main$update = F2(
 	});
 var $author$project$Main$Clear = {$: 'Clear'};
 var $author$project$Main$Del = {$: 'Del'};
-var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5273,6 +5257,9 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			key,
 			$elm$json$Json$Encode$string(string));
 	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
@@ -5374,12 +5361,18 @@ var $author$project$Main$view = function (model) {
 			[
 				A2(
 				$elm$html$Html$div,
-				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('display')
+					]),
 				_List_fromArray(
 					[
 						A2(
 						$elm$html$Html$div,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('current')
+							]),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -5387,7 +5380,10 @@ var $author$project$Main$view = function (model) {
 							])),
 						A2(
 						$elm$html$Html$div,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('result')
+							]),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -5395,33 +5391,51 @@ var $author$project$Main$view = function (model) {
 							])),
 						A2(
 						$elm$html$Html$div,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('comment')
+							]),
 						_List_fromArray(
 							[
 								A2(
 								$elm$html$Html$div,
-								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('comment-inner')
+									]),
 								_List_fromArray(
 									[
 										A2(
 										$elm$html$Html$div,
-										_List_Nil,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('textarea')
+											]),
 										_List_fromArray(
 											[
 												$elm$html$Html$text(model.currentMessage)
 											])),
-										A2($elm$html$Html$div, _List_Nil, _List_Nil)
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('triangle')
+											]),
+										_List_Nil)
 									])),
 								A2(
 								$elm$html$Html$div,
-								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('character')
+									]),
 								_List_fromArray(
 									[
 										A2(
 										$elm$html$Html$img,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$src('./assets/character.png')
+												$elm$html$Html$Attributes$src('src/assets/character.png')
 											]),
 										_List_Nil)
 									]))
@@ -5429,16 +5443,25 @@ var $author$project$Main$view = function (model) {
 					])),
 				A2(
 				$elm$html$Html$div,
-				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('container')
+					]),
 				_List_fromArray(
 					[
 						A2(
 						$elm$html$Html$ul,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('left')
+							]),
 						A2($elm$core$List$map, $author$project$Main$viewButtonNum, model.buttons.nums)),
 						A2(
 						$elm$html$Html$ul,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('right')
+							]),
 						_List_fromArray(
 							[
 								A2($author$project$Main$viewButtonText, $author$project$Main$Clear, model.buttons.clear),
@@ -5455,21 +5478,3 @@ var $author$project$Main$main = $elm$browser$Browser$sandbox(
 	{init: $author$project$Main$init, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
-
-  var app = Elm.Main.init({ node: document.getElementById("elm") });
-}
-catch (e)
-{
-  // display initialization errors (e.g. bad flags, infinite recursion)
-  var header = document.createElement("h1");
-  header.style.fontFamily = "monospace";
-  header.innerText = "Initialization Error";
-  var pre = document.getElementById("elm");
-  document.body.insertBefore(header, pre);
-  pre.innerText = e;
-  throw e;
-}
-</script>
-
-</body>
-</html>

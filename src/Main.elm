@@ -66,23 +66,23 @@ viewButtonSign command str =
 view : Model -> Html Msg
 view model =
     div []
-        [ div []
-            [ div [] 
+        [ div [class "display"]
+            [ div [class "current"] 
                 [ text (String.fromFloat model.current)]
-            , div [] 
+            , div [class "result"] 
                 [ text (String.fromFloat model.result)]
-            , div []
-                [ div [] 
-                    [ div [] 
+            , div [class "comment"]
+                [ div [class "comment-inner"] 
+                    [ div [class "textarea"] 
                         [ text model.currentMessage]
-                    , div [] []]
-                , div [] 
-                    [ img [ src "./assets/character.png"] []]]]
-        , div [] 
-            [ ul []
+                    , div [class "triangle"] []]
+                , div [class "character"] 
+                    [ img [ src "src/assets/character.png"] []]]]
+        , div [class "container"] 
+            [ ul [class "left"]
                 (model.buttons.nums 
                     |> List.map viewButtonNum)
-            , ul [] 
+            , ul [class "right"] 
                 [ viewButtonText Clear model.buttons.clear
                 , viewButtonText Del model.buttons.del
                 , viewButtonSign (+) "+" 
