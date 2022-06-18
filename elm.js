@@ -5296,9 +5296,6 @@ var $elm$html$Html$Attributes$src = function (url) {
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$ul = _VirtualDom_node('ul');
-var $author$project$Main$Command = function (a) {
-	return {$: 'Command', a: a};
-};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$li = _VirtualDom_node('li');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
@@ -5318,8 +5315,31 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
-var $author$project$Main$viewButtonCommand = F2(
-	function (command, str) {
+var $author$project$Main$viewButton = F3(
+	function (msg, str, className) {
+		return A2(
+			$elm$html$Html$li,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onClick(msg),
+							$elm$html$Html$Attributes$class(className)
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(str)
+						]))
+				]));
+	});
+var $author$project$Main$Command = function (a) {
+	return {$: 'Command', a: a};
+};
+var $author$project$Main$viewButtonCommand = F3(
+	function (command, str, className) {
 		return A2(
 			$elm$html$Html$li,
 			_List_Nil,
@@ -5330,7 +5350,8 @@ var $author$project$Main$viewButtonCommand = F2(
 					_List_fromArray(
 						[
 							$elm$html$Html$Events$onClick(
-							$author$project$Main$Command(command))
+							$author$project$Main$Command(command)),
+							$elm$html$Html$Attributes$class(className)
 						]),
 					_List_fromArray(
 						[
@@ -5339,22 +5360,7 @@ var $author$project$Main$viewButtonCommand = F2(
 				]));
 	});
 var $author$project$Main$Equal = {$: 'Equal'};
-var $author$project$Main$viewButtonEqual = A2(
-	$elm$html$Html$li,
-	_List_Nil,
-	_List_fromArray(
-		[
-			A2(
-			$elm$html$Html$button,
-			_List_fromArray(
-				[
-					$elm$html$Html$Events$onClick($author$project$Main$Equal)
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('=')
-				]))
-		]));
+var $author$project$Main$viewButtonEqual = A3($author$project$Main$viewButton, $author$project$Main$Equal, '=', 'mark');
 var $author$project$Main$Input = function (a) {
 	return {$: 'Input', a: a};
 };
@@ -5378,25 +5384,6 @@ var $author$project$Main$viewButtonNum = function (_int) {
 					]))
 			]));
 };
-var $author$project$Main$viewButtonText = F2(
-	function (msg, str) {
-		return A2(
-			$elm$html$Html$li,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$button,
-					_List_fromArray(
-						[
-							$elm$html$Html$Events$onClick(msg)
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(str)
-						]))
-				]));
-	});
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -5514,9 +5501,9 @@ var $author$project$Main$view = function (model) {
 								$elm$core$List$append,
 								_List_fromArray(
 									[
-										A2($author$project$Main$viewButtonText, $author$project$Main$Del, ''),
+										A3($author$project$Main$viewButton, $author$project$Main$Del, '', ''),
 										$author$project$Main$viewButtonNum(0),
-										A2($author$project$Main$viewButtonText, $author$project$Main$Del, '')
+										A3($author$project$Main$viewButton, $author$project$Main$Del, '', '')
 									]),
 								_List_Nil))),
 						A2(
@@ -5527,12 +5514,12 @@ var $author$project$Main$view = function (model) {
 							]),
 						_List_fromArray(
 							[
-								A2($author$project$Main$viewButtonText, $author$project$Main$Clear, model.buttons.clear),
-								A2($author$project$Main$viewButtonText, $author$project$Main$Del, model.buttons.del),
-								A2($author$project$Main$viewButtonCommand, $elm$core$Basics$add, '+'),
-								A2($author$project$Main$viewButtonCommand, $elm$core$Basics$sub, '-'),
-								A2($author$project$Main$viewButtonCommand, $elm$core$Basics$mul, '*'),
-								A2($author$project$Main$viewButtonCommand, $elm$core$Basics$fdiv, '/'),
+								A3($author$project$Main$viewButton, $author$project$Main$Clear, model.buttons.clear, 'clear'),
+								A3($author$project$Main$viewButton, $author$project$Main$Del, model.buttons.del, 'del'),
+								A3($author$project$Main$viewButtonCommand, $elm$core$Basics$add, '+', 'mark'),
+								A3($author$project$Main$viewButtonCommand, $elm$core$Basics$sub, '-', 'mark'),
+								A3($author$project$Main$viewButtonCommand, $elm$core$Basics$mul, '*', 'mark'),
+								A3($author$project$Main$viewButtonCommand, $elm$core$Basics$fdiv, '/', 'mark'),
 								$author$project$Main$viewButtonEqual
 							]))
 					]))

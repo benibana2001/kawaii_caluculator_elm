@@ -48,24 +48,23 @@ stringToFloat str = Maybe.withDefault 0 <| String.toFloat str
 
 -- VIEW
 
-viewButtonText : Msg -> String -> Html Msg
-viewButtonText msg str =
+viewButton : Msg -> String -> String -> Html Msg
+viewButton msg str className =
     li []
-    [ button [ onClick msg ] [ text str ] ]
+    [ button [ onClick msg, class className] [ text str] ]
 
 viewButtonNum : Int -> Html Msg
 viewButtonNum int =
     li []
     [ button [ onClick (Input int) ] [ text <| String.fromInt int ]]
 
-viewButtonCommand : (Float -> Float -> Float) -> String -> Html Msg
-viewButtonCommand command str =
+viewButtonCommand : (Float -> Float -> Float) -> String -> String -> Html Msg
+viewButtonCommand command str className =
     li []
-    [ button [ onClick (Command command) ] [ text str ]]
+    [ button [ onClick (Command command), class className ] [ text str ]]
 
 viewButtonEqual = 
-    li []
-    [ button [ onClick Equal ] [ text "=" ] ]
+    viewButton Equal "=" "mark"
 
 view : Model -> Html Msg
 view model =
@@ -86,20 +85,20 @@ view model =
             [ ul [class "left"]
                 ( []
                     |> List.append
-                        [ viewButtonText Del ""
+                        [ viewButton Del "" ""
                         , viewButtonNum 0
-                        , viewButtonText Del "" ]
+                        , viewButton Del "" "" ]
                     |> List.append
                         ( model.buttons.nums 
                             |> List.filter (\n -> n > 0)
                             |> List.map viewButtonNum ))
             , ul [class "right"] 
-                [ viewButtonText Clear model.buttons.clear
-                , viewButtonText Del model.buttons.del
-                , viewButtonCommand (+) "+" 
-                , viewButtonCommand (-) "-" 
-                , viewButtonCommand (*) "*"
-                , viewButtonCommand (/) "/"
+                [ viewButton Clear model.buttons.clear "clear"
+                , viewButton Del model.buttons.del "del"
+                , viewButtonCommand (+) "+" "mark"
+                , viewButtonCommand (-) "-" "mark"
+                , viewButtonCommand (*) "*" "mark"
+                , viewButtonCommand (/) "/" "mark"
                 , viewButtonEqual ] ] ]
                 
 
