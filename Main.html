@@ -2,20 +2,19 @@
    <html>
    <head>
        <meta charset="UTF-8">
-       <title>Main</title>
+       <title>電卓</title>
    </head>
    <body>
-   <div id="elm-app-is-loaded-here"></div>
+   <div id="elm-app"></div>
    <link rel="stylesheet" href="style.css">
    <script>
         const vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty("--vh", `${vh}px`);
    </script>
    <script src="elm.js"></script>
-
    <script>
        var app = Elm.Main.init({
-           node: document.getElementById("elm-app-is-loaded-here")
+           node: document.getElementById("elm-app")
        });
    </script>
    </body>

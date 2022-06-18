@@ -28,21 +28,8 @@ html {
   font-size: 62.5%;
 }
 
-@media (max-width: 400px) {
-  html {
-    font-size: 50%;
-  }
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 90%;
-  }
-}
-
 body {
   background-color: black;
-  font-size: 1.4em;
 }
 
 #app {
@@ -53,6 +40,8 @@ body {
 }
 
 .display {
+  display: flex;
+  flex-flow: column;
   background: rgba(255, 255, 255, 0.9);
   text-align: right;
   height: 30vh;
@@ -60,11 +49,13 @@ body {
 }
 
 .current {
-  font-size: 4em;
+  /* font-size: 4em; */
+  font-size: calc(var(--vh, 1vh) * 5);
 }
 
 .result {
-  font-size: 2em;
+  /* font-size: 2em; */
+  font-size: calc(var(--vh, 1vh) * 5);
   color: #555;
 }
 
@@ -109,11 +100,10 @@ body {
 }
 
 button {
-  font-size: 1.4em;
   background-color: #444;
   color: white;
   border: none;
-  font-size: 1.6em;
+  font-size: calc(var(--vh, 1vh) * 3);
   font-weight: lighter;
 }
 button:focus {
@@ -136,6 +126,7 @@ button.del {
 }
 
 div.comment {
+  font-size: calc(var(--vh, 1vh) * 2);
   display: flex;
   justify-content: flex-end;
 }
