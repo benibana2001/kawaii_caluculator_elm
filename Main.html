@@ -7,7 +7,12 @@
    <body>
    <div id="elm-app-is-loaded-here"></div>
    <link rel="stylesheet" href="style.css">
+   <script>
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty("--vh", `${vh}px`);
+   </script>
    <script src="elm.js"></script>
+
    <script>
        var app = Elm.Main.init({
            node: document.getElementById("elm-app-is-loaded-here")

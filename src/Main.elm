@@ -28,7 +28,7 @@ type alias Model =
         , signs : List String }}
 init : Model
 init =
-    { currentMessage = "currentMessage"
+    { currentMessage = "Elm Elm Elm Elm Elm Elm"
     , messages= ["message01", "message02"]
     , clickMessage = ["clickMessage"]
     , current = 0
@@ -68,7 +68,7 @@ viewButtonEqual =
 
 view : Model -> Html Msg
 view model =
-    div []
+    div [ id "app" ]
         [ div [class "display"]
             [ div [class "current"] 
                 [ text (String.fromFloat model.current)]
@@ -77,8 +77,7 @@ view model =
             , div [class "comment"]
                 [ div [class "comment-inner"] 
                     [ div [class "textarea"] 
-                        [ text model.currentMessage]
-                    , div [class "triangle"] []]
+                        [ text model.currentMessage]]
                 , div [class "character"] 
                     [ img [ src "src/assets/character.png"] []]]]
         , div [class "container"] 

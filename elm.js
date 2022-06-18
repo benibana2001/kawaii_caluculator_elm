@@ -4513,7 +4513,7 @@ var $author$project$Main$init = {
 		['clickMessage']),
 	command: $elm$core$Basics$add,
 	current: 0,
-	currentMessage: 'currentMessage',
+	currentMessage: 'Elm Elm Elm Elm Elm Elm',
 	messages: _List_fromArray(
 		['message01', 'message02']),
 	result: 0
@@ -5286,6 +5286,7 @@ var $elm$core$List$filter = F2(
 			_List_Nil,
 			list);
 	});
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
@@ -5387,7 +5388,10 @@ var $author$project$Main$viewButtonNum = function (_int) {
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
-		_List_Nil,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$id('app')
+			]),
 		_List_fromArray(
 			[
 				A2(
@@ -5445,14 +5449,7 @@ var $author$project$Main$view = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$text(model.currentMessage)
-											])),
-										A2(
-										$elm$html$Html$div,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('triangle')
-											]),
-										_List_Nil)
+											]))
 									])),
 								A2(
 								$elm$html$Html$div,
