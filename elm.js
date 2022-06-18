@@ -4511,7 +4511,7 @@ var $author$project$Main$init = {
 	},
 	clickMessage: _List_fromArray(
 		['clickMessage']),
-	commands: $elm$core$Basics$add,
+	command: $elm$core$Basics$add,
 	current: 0,
 	currentMessage: 'currentMessage',
 	messages: _List_fromArray(
@@ -5233,22 +5233,38 @@ var $author$project$Main$update = F2(
 				return _Utils_update(
 					model,
 					{
-						commands: command,
+						command: command,
 						current: 0,
-						result: A2(model.commands, model.result, model.current)
+						result: A2(model.command, model.result, model.current)
 					});
 			case 'Clear':
 				return _Utils_update(
 					model,
-					{commands: $elm$core$Basics$add, current: 0, result: 0});
-			default:
+					{command: $elm$core$Basics$add, current: 0, result: 0});
+			case 'Del':
 				return _Utils_update(
 					model,
 					{current: 0});
+			default:
+				return _Utils_update(
+					model,
+					{
+						command: $elm$core$Basics$add,
+						current: A2(model.command, model.result, model.current),
+						result: 0
+					});
 		}
 	});
 var $author$project$Main$Clear = {$: 'Clear'};
 var $author$project$Main$Del = {$: 'Del'};
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5259,6 +5275,17 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
@@ -5269,8 +5296,8 @@ var $elm$html$Html$Attributes$src = function (url) {
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$ul = _VirtualDom_node('ul');
-var $author$project$Main$Input = function (a) {
-	return {$: 'Input', a: a};
+var $author$project$Main$Command = function (a) {
+	return {$: 'Command', a: a};
 };
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$li = _VirtualDom_node('li');
@@ -5290,6 +5317,46 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		$elm$html$Html$Events$on,
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
+};
+var $author$project$Main$viewButtonCommand = F2(
+	function (command, str) {
+		return A2(
+			$elm$html$Html$li,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onClick(
+							$author$project$Main$Command(command))
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(str)
+						]))
+				]));
+	});
+var $author$project$Main$Equal = {$: 'Equal'};
+var $author$project$Main$viewButtonEqual = A2(
+	$elm$html$Html$li,
+	_List_Nil,
+	_List_fromArray(
+		[
+			A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick($author$project$Main$Equal)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('=')
+				]))
+		]));
+var $author$project$Main$Input = function (a) {
+	return {$: 'Input', a: a};
 };
 var $author$project$Main$viewButtonNum = function (_int) {
 	return A2(
@@ -5311,29 +5378,6 @@ var $author$project$Main$viewButtonNum = function (_int) {
 					]))
 			]));
 };
-var $author$project$Main$Command = function (a) {
-	return {$: 'Command', a: a};
-};
-var $author$project$Main$viewButtonSign = F2(
-	function (command, str) {
-		return A2(
-			$elm$html$Html$li,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$button,
-					_List_fromArray(
-						[
-							$elm$html$Html$Events$onClick(
-							$author$project$Main$Command(command))
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(str)
-						]))
-				]));
-	});
 var $author$project$Main$viewButtonText = F2(
 	function (msg, str) {
 		return A2(
@@ -5455,7 +5499,26 @@ var $author$project$Main$view = function (model) {
 							[
 								$elm$html$Html$Attributes$class('left')
 							]),
-						A2($elm$core$List$map, $author$project$Main$viewButtonNum, model.buttons.nums)),
+						A2(
+							$elm$core$List$append,
+							A2(
+								$elm$core$List$map,
+								$author$project$Main$viewButtonNum,
+								A2(
+									$elm$core$List$filter,
+									function (n) {
+										return n > 0;
+									},
+									model.buttons.nums)),
+							A2(
+								$elm$core$List$append,
+								_List_fromArray(
+									[
+										A2($author$project$Main$viewButtonText, $author$project$Main$Del, ''),
+										$author$project$Main$viewButtonNum(0),
+										A2($author$project$Main$viewButtonText, $author$project$Main$Del, '')
+									]),
+								_List_Nil))),
 						A2(
 						$elm$html$Html$ul,
 						_List_fromArray(
@@ -5466,10 +5529,11 @@ var $author$project$Main$view = function (model) {
 							[
 								A2($author$project$Main$viewButtonText, $author$project$Main$Clear, model.buttons.clear),
 								A2($author$project$Main$viewButtonText, $author$project$Main$Del, model.buttons.del),
-								A2($author$project$Main$viewButtonSign, $elm$core$Basics$add, '+'),
-								A2($author$project$Main$viewButtonSign, $elm$core$Basics$sub, '-'),
-								A2($author$project$Main$viewButtonSign, $elm$core$Basics$mul, '*'),
-								A2($author$project$Main$viewButtonSign, $elm$core$Basics$fdiv, '/')
+								A2($author$project$Main$viewButtonCommand, $elm$core$Basics$add, '+'),
+								A2($author$project$Main$viewButtonCommand, $elm$core$Basics$sub, '-'),
+								A2($author$project$Main$viewButtonCommand, $elm$core$Basics$mul, '*'),
+								A2($author$project$Main$viewButtonCommand, $elm$core$Basics$fdiv, '/'),
+								$author$project$Main$viewButtonEqual
 							]))
 					]))
 			]));

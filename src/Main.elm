@@ -20,7 +20,7 @@ type alias Model =
     , clickMessage : List String
     , current : Float
     , result : Float
-    , commands : Float -> Float -> Float
+    , command : Float -> Float -> Float
     , buttons :
         { clear : String
         , del : String
@@ -33,7 +33,7 @@ init =
     , clickMessage = ["clickMessage"]
     , current = 0
     , result = 0
-    , commands = (+)
+    , command = (+)
     , buttons = 
         { clear = "clear"
         , del = "del"
@@ -58,10 +58,14 @@ viewButtonNum int =
     li []
     [ button [ onClick (Input int) ] [ text <| String.fromInt int ]]
 
-viewButtonSign : (Float -> Float -> Float) -> String -> Html Msg
-viewButtonSign command str =
+viewButtonCommand : (Float -> Float -> Float) -> String -> Html Msg
+viewButtonCommand command str =
     li []
     [ button [ onClick (Command command) ] [ text str ]]
+
+viewButtonEqual = 
+    li []
+    [ button [ onClick Equal ] [ text "=" ] ]
 
 view : Model -> Html Msg
 view model =
@@ -80,15 +84,23 @@ view model =
                     [ img [ src "src/assets/character.png"] []]]]
         , div [class "container"] 
             [ ul [class "left"]
-                (model.buttons.nums 
-                    |> List.map viewButtonNum)
+                ( []
+                    |> List.append
+                        [ viewButtonText Del ""
+                        , viewButtonNum 0
+                        , viewButtonText Del "" ]
+                    |> List.append
+                        ( model.buttons.nums 
+                            |> List.filter (\n -> n > 0)
+                            |> List.map viewButtonNum ))
             , ul [class "right"] 
                 [ viewButtonText Clear model.buttons.clear
                 , viewButtonText Del model.buttons.del
-                , viewButtonSign (+) "+" 
-                , viewButtonSign (-) "-" 
-                , viewButtonSign (*) "*"
-                , viewButtonSign (/) "/" ] ] ]
+                , viewButtonCommand (+) "+" 
+                , viewButtonCommand (-) "-" 
+                , viewButtonCommand (*) "*"
+                , viewButtonCommand (/) "/"
+                , viewButtonEqual ] ] ]
                 
 
 -- UPDATE
@@ -100,20 +112,26 @@ update msg model =
                 | current = stringToFloat <| (String.fromFloat model.current) ++ (String.fromInt input) }
         Command command ->
             { model 
-                | result = model.commands model.result model.current
+                | result = model.command model.result model.current
                 , current = 0
-                , commands = command }
+                , command = command }
         Clear ->
             { model
                 | result = 0
                 , current = 0
-                , commands = (+) }
+                , command = (+) }
         Del ->
             { model
                 | current = 0 }
+        Equal ->
+            { model
+                | current = model.command model.result model.current
+                , result = 0
+                , command = (+) }
 
 type Msg
     = Input Int
     | Command (Float -> Float -> Float)
     | Clear
     | Del
+    | Equal
